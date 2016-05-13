@@ -1,116 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Random Timer</title>
-</head>
-<body>
+  </head>
+  <body>
 
-
-<div id="text">
-    <div>
+    <div id="config">
+      <div>
         <label>
-            Minimum seconds
-            <input type="number" id="min" value="180"/>
+          Minimum seconds
+          <input type="number" id="min" value="180" />
         </label>
-    </div>
-    <div>
+      </div>
+      <div>
         <label>
-            Maximum seconds
-            <input type="number" id="max" value="300"/>
+          Maximum seconds
+          <input type="number" id="max" value="300" />
         </label>
-    </div>
-    <div>
+      </div>
+      <div>
         <label>
-            Alarm seconds
-            <input type="number" id="alarm" value="3"/>
+          Alarm seconds
+          <input type="number" id="alarm" value="5" />
         </label>
-    </div>
-    <div>
+      </div>
+      <div>
         <input type="button" onclick="go()" value="Go" />
+      </div>
     </div>
-</div>
 
-<script>
+    <div id="text">
+    </div>
 
-    var MIN_TIMER_SECONDS;
-    var MAX_TIMER_SECONDS;
-    var ALARM_DURATION_SECONDS;
 
-    var context = new (window.AudioContext || window.webkitAudioContext)();
-    var gainNode = context.createGain();
-    gainNode.gain.value = 0;
-    var osc = context.createOscillator();
-    osc.type = 'sine';
-    osc.connect(gainNode);
-    gainNode.connect(context.destination);
-    osc.start();
+    <script>
 
-    function startPlaying() {
+      var MIN_TIMER_SECONDS;
+      var MAX_TIMER_SECONDS;
+      var ALARM_DURATION_SECONDS;
+
+      var context = new (window.AudioContext || window.webkitAudioContext)();
+      var gainNode = context.createGain();
+      gainNode.gain.value = 0;
+      var osc = context.createOscillator();
+      osc.type = 'sine';
+      osc.connect(gainNode);
+      gainNode.connect(context.destination);
+      osc.start();
+
+      function startPlaying() {
         gainNode.gain.value = 0.5;
-    }
+      }
 
-    function stopPlaying() {
+      function stopPlaying() {
         gainNode.gain.value = 0;
-    }
+      }
 
-    function playBeep() {
+      function playBeep() {
         osc.frequency.value = 1318.51; // E6
         startPlaying();
         setTimeout(function () {
-            stopPlaying();
+          stopPlaying();
         }, 50);
-    }
+      }
 
-    function playAlarm2() {
+      function playAlarm2() {
         osc.frequency.value = 130.81; // C3
         startPlaying();
         setTimeout(function () {
-            osc.frequency.value = 123.47; // B2
+          osc.frequency.value = 123.47; // B2
+          setTimeout(function () {
+            osc.frequency.value = 116.54; // A#2
             setTimeout(function () {
-                osc.frequency.value = 116.54; // A#2
-                setTimeout(function () {
-                    stopPlaying();
-                }, 500);
-            }, 333);
+              stopPlaying();
+            }, 500);
+          }, 333);
         }, 333);
-    }
+      }
 
-    function countdown() {
+      function countdown() {
         var count = 0;
         var interval = setInterval(function () {
-            count++;
-            if (count > ALARM_DURATION_SECONDS) {
-                clearInterval(interval);
-                playAlarm2();
-                document.getElementById("text").innerHTML = "STOP";
-            } else {
-                playBeep();
-            }
+          count++;
+          if (count > ALARM_DURATION_SECONDS) {
+            clearInterval(interval);
+            playAlarm2();
+            document.getElementById("text").innerHTML = "";
+            document.getElementById("config").style.display = "block";
+          } else {
+            playBeep();
+          }
         }, 1000);
-    }
+      }
 
-    function playAlarm1() {
+      function playAlarm1() {
         osc.frequency.value = 392.00; // G4
         startPlaying();
         setTimeout(function () {
-            osc.frequency.value = 783.99; // G5
+          osc.frequency.value = 783.99; // G5
+          setTimeout(function () {
+            osc.frequency.value = 523.25; // C5
             setTimeout(function () {
-                osc.frequency.value = 523.25; // C5
-                setTimeout(function () {
-                    stopPlaying();
-                    osc.frequency.value = 1318.51; // E6
-                    countdown();
-                }, 500);
-            }, 333);
+              stopPlaying();
+              osc.frequency.value = 1318.51; // E6
+              countdown();
+            }, 500);
+          }, 333);
         }, 333);
-    }
+      }
 
-    function getRandomInt(min, max) {
+      function getRandomInt(min, max) {
         return Math.random() * (max - min) + min;
-    }
+      }
 
-    function go() {
+      function go() {
+
+        document.getElementById("config").style.display = "none";
 
         MIN_TIMER_SECONDS = parseInt(document.getElementById("min").value);
         MAX_TIMER_SECONDS = parseInt(document.getElementById("max").value);
@@ -120,12 +126,12 @@
 
         document.getElementById("text").innerHTML = "Timer Running between " + MIN_TIMER_SECONDS + " and " + MAX_TIMER_SECONDS + " seconds";
         setTimeout(function () {
-            playAlarm1(true);
-            document.getElementById("text").innerHTML = "ALARM!";
+          playAlarm1(true);
+          document.getElementById("text").innerHTML = "ALARM!";
         }, delay);
-    }
+      }
 
-</script>
+    </script>
 
-</body>
+  </body>
 </html>
