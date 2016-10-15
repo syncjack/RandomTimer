@@ -10,7 +10,7 @@
     <br>
     <div class="row">
       <div class="columns" id="config">
-        <div>
+        <div style="display:none">
           <label>
             Edge Ride Minimum (minutes)
             <input type="number" id="min" value="0" />
@@ -79,13 +79,13 @@
 
         document.getElementById("config").style.display = "none";
 
-        minTimerMinutes = parseInt(document.getElementById("min").value);
-        maxTimerMinutes = parseInt(document.getElementById("max").value);
-        alarmDurationSeconds = parseInt(document.getElementById("alarm").value);
+        minTimerMinutes = parseFloat(document.getElementById("min").value);
+        maxTimerMinutes = parseFloat(document.getElementById("max").value);
+        alarmDurationSeconds = parseFloat(document.getElementById("alarm").value);
 
         var delay = getRandomInt(minTimerMinutes * 60, maxTimerMinutes * 60) * 1000;
 
-        document.getElementById("text").innerHTML = "Timer Running between " + minTimerMinutes + " and " + maxTimerMinutes + " minutes";
+        document.getElementById("text").innerHTML = "Timer Running for " + maxTimerMinutes + " minutes.  Alarm can sound at any time!";
         setTimeout(function () {
           countdown();
         }, delay);
