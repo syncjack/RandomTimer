@@ -10,7 +10,7 @@
     <br>
     <div class="row">
       <div class="columns" id="config">
-        <div style="display:none">
+        <div>
           <label>
             Edge Ride Minimum (minutes)
             <input type="number" id="min" value="0" />
@@ -26,6 +26,12 @@
           <label>
             Cum Alarm Duration (seconds)
             <input type="number" id="alarm" value="4" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Hands off after alarm?
+            <input type="checkbox" id="alarm-end" checked />
           </label>
         </div>
         <div>
@@ -47,12 +53,18 @@
       var maxTimerMinutes;
       var alarmDurationSeconds;
 
+      function getRandomInt(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
       function playAlarm1() {
         new Audio('cum.mp3').play();
       }
 
       function playAlarm2() {
-        new Audio('handsoff.mp3').play();
+        if (document.getElementById("alarm-end").checked) {
+          new Audio('handsoff.mp3').play();
+        }
       }
 
       function countdown() {
@@ -69,10 +81,6 @@
             playAlarm1();
           }
         }, 1000);
-      }
-
-      function getRandomInt(min, max) {
-        return Math.random() * (max - min) + min;
       }
 
       function go() {
