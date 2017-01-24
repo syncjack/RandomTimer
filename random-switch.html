@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Random Timer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.css" type="text/css">
+  </head>
+  <body>
+
+    <br>
+    <div class="row">
+      <div class="columns" id="config">
+        <div>
+          <label>
+            Fast Stroke Minimum (minutes)
+            <input type="number" id="fastMin" value="1" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Fast Stroke Maximum (minutes)
+            <input type="number" id="fastMax" value="3" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Slow Stroke Minimum (minutes)
+            <input type="number" id="slowMin" value="0.5" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Slow Stroke Maximum (minutes)
+            <input type="number" id="slowMax" value="2" />
+          </label>
+        </div>
+        <div>
+          <input type="button" onclick="go('fast')" value="Go Fast" />
+        </div>
+        <div>
+          <input type="button" onclick="go('slow')" value="Go Slow" />
+        </div>
+      </div>
+
+      <div class="columns" id="text">
+      </div>
+    </div>
+
+    <script>
+      (function(s){var w,f={},o=window,l=console,m=Math,z='postMessage',x='HackTimer.js by turuslan: ',v='Initialisation failed',p=0,r='hasOwnProperty',y=[].slice,b=Worker;function d(){do{p=0x7FFFFFFF>p?p+1:0}while(f[r](p))return p}try{s=o.URL.createObjectURL(new Blob(["var f={},p=postMessage,r='hasOwnProperty';onmessage=function(e){var d=e.data,i=d.i,t=d[r]('t')?d.t:0;switch(d.n){case'a':f[i]=setInterval(function(){p(i)},t);break;case'b':if(f[r](i)){clearInterval(f[i]);delete f[i]}break;case'c':f[i]=setTimeout(function(){p(i);if(f[r](i))delete f[i]},t);break;case'd':if(f[r](i)){clearTimeout(f[i]);delete f[i]}break}}"]))}catch(e){}if(typeof(b)!=='undefined'){try{w=new b(s);o.setInterval=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2)};w[z]({n:'a',i:i,t:t});return i};o.clearInterval=function(i){if(f[r](i))delete f[i],w[z]({n:'b',i:i})};o.setTimeout=function(c,t){var i=d();f[i]={c:c,p:y.call(arguments,2),t:!0};w[z]({n:'c',i:i,t:t});return i};o.clearTimeout=function(i){if(f[r](i))delete f[i],w[z]({n:'d',i:i})};w.onmessage=function(e){var i=e.data,c,n;if(f[r](i)){n=f[i];c=n.c;if(n[r]('t'))delete f[i]}if(typeof(c)=='string')try{c=new Function(c)}catch(k){l.log(x+'Error parsing callback code string: ',k)}if(typeof(c)=='function')c.apply(o,n.p)};w.onerror=function(e){l.log(e)};l.log(x+'Initialisation succeeded')}catch(e){l.log(x+v);l.error(e)}}else l.log(x+v+' - HTML5 Web Worker is not supported')})('HackTimerWorker.min.js');
+    </script>
+
+
+    <script>
+      var minTimerMinutes;
+      var maxTimerMinutes;
+
+      function getRandomInt(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function playAlarm1() {
+        new Audio('handsoff.mp3').play();
+      }
+
+      function countdown() {
+        playAlarm1();
+        document.getElementById("text").innerHTML = "";
+        document.getElementById("config").style.display = "block";
+      }
+
+      function go(name) {
+
+        document.getElementById("config").style.display = "none";
+
+        minTimerMinutes = parseFloat(document.getElementById(name + "Min").value);
+        maxTimerMinutes = parseFloat(document.getElementById(name + "Max").value);
+
+        var delay = getRandomInt(minTimerMinutes * 60, maxTimerMinutes * 60) * 1000;
+        console.log('delay', delay / 1000);
+
+        document.getElementById("text").innerHTML = "Timer Running for " + maxTimerMinutes + " minutes.  Alarm can sound at any time!";
+        setTimeout(function () {
+          countdown();
+        }, delay);
+      }
+
+    </script>
+
+  </body>
+</html>
