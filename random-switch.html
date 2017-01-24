@@ -13,29 +13,30 @@
         <div>
           <label>
             Fast Stroke Minimum (minutes)
-            <input type="number" id="fastMin" value="1" />
+            <input type="text" id="fastMin" value="1" />
           </label>
         </div>
         <div>
           <label>
             Fast Stroke Maximum (minutes)
-            <input type="number" id="fastMax" value="3" />
+            <input type="text" id="fastMax" value="3" />
           </label>
         </div>
         <div>
+          <input type="button" onclick="go('fast')" value="Go Fast" />
+        </div>
+        <br>
+        <div>
           <label>
             Slow Stroke Minimum (minutes)
-            <input type="number" id="slowMin" value="0.5" />
+            <input type="text" id="slowMin" value="0.5" />
           </label>
         </div>
         <div>
           <label>
             Slow Stroke Maximum (minutes)
-            <input type="number" id="slowMax" value="2" />
+            <input type="text" id="slowMax" value="2" />
           </label>
-        </div>
-        <div>
-          <input type="button" onclick="go('fast')" value="Go Fast" />
         </div>
         <div>
           <input type="button" onclick="go('slow')" value="Go Slow" />
@@ -77,7 +78,6 @@
         maxTimerMinutes = parseFloat(document.getElementById(name + "Max").value);
 
         var delay = getRandomInt(minTimerMinutes * 60, maxTimerMinutes * 60) * 1000;
-        console.log('delay', delay / 1000);
 
         document.getElementById("text").innerHTML = "Timer Running for " + maxTimerMinutes + " minutes.  Alarm can sound at any time!";
         setTimeout(function () {
